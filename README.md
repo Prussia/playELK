@@ -30,5 +30,5 @@ $ docker run \
   --volume="/var/run/docker.sock:/var/run/docker.sock:ro" \
   --volume="$(pwd)/csv/:/var/log/" \
   docker.elastic.co/beats/filebeat:7.10.1 filebeat -e -strict.perms=false \
-  -E output.elasticsearch.hosts=["localhost:9200"]
+  -E output.elasticsearch.hosts=["elasticsearch:9200"]
 

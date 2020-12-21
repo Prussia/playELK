@@ -10,21 +10,21 @@ services:
       - ${PWD}/elasticsearch.yml:/etc/elasticsearch/elasticsearch.yml
       - ${PWD}/elk-data:/var/lib/elasticsearch
 
-  # filebeat:
-  #   image: docker.elastic.co/beats/filebeat:7.10.1
-  #   environment:
-  #     - setup.kibana.host=elk:5601
-  #     - output.elasticsearch.hosts=["elk:9200"]
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - /var/lib/docker/containers:/var/lib/docker/containers
-  #     - ${PWD}/filebeat/data:/usr/share/filebeat/data
-  #   user: root
-  #   volumes:
-  #     - ${PWD}/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml
-  #   # command:
-  #   #   --strict.perms=false
-  #   links:
-  #     - elk
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.10.1
+    environment:
+      - setup.kibana.host=elk:5601
+      - output.elasticsearch.hosts=["elk:9200"]
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/log/:/var/log/:ro
+      - ${PWD}/filebeat/data:/usr/share/filebeat/data
+    user: root
+    volumes:
+      - ${PWD}/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml
+    command: ["--strict.perms=false"]
+    links:
+      - elk
 
 
   
