@@ -6,3 +6,19 @@ Run a container from the image with the following command:
 
 $ sudo docker run -p 5601:5601 -p 9200:9200 -p 5044:5044 -it --name elk sebp/elk
 
+This command publishes the following ports, which are needed for proper operation of the ELK stack:
+
+5601 (Kibana web interface).
+
+9200 (Elasticsearch JSON interface).
+
+5044 (Logstash Beats interface, receives logs from Beats such as Filebeat – see the Forwarding logs with Filebeat section).
+
+The image exposes (but does not publish):
+
+Elasticsearch's transport interface on port 9300. Use the -p 9300:9300 option with the docker command above to publish it. This transport interface is notably used by Elasticsearch's Java client API, and to run Elasticsearch in a cluster.
+
+Logstash's monitoring API on port 9600. Use the -p 9600:9600 option with the docker command above to publish it.
+
+$ sudo docker-compose up elk
+
