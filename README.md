@@ -20,5 +20,15 @@ Elasticsearch's transport interface on port 9300. Use the -p 9300:9300 option wi
 
 Logstash's monitoring API on port 9600. Use the -p 9600:9600 option with the docker command above to publish it.
 
-$ sudo docker-compose up elk
+$ sudo docker-compose up
+
+$ docker run -d \
+  --name=filebeat \
+  --user=root \
+  --volume="$(pwd)/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro" \
+  --volume="/var/lib/docker/containers:/var/lib/docker/containers:ro" \
+  --volume="/var/run/docker.sock:/var/run/docker.sock:ro" \
+  --volume="$(pwd)/csv/:/var/log/"
+  docker.elastic.co/beats/filebeat:7.10.1 filebeat -e -strict.perms=false \
+  -E output.elasticsearch.hosts=["elasticsearch:9200"]
 

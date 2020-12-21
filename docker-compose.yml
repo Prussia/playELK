@@ -1,13 +1,30 @@
-# yourapp:
-#   image: your/image
-#   ports:
-#     - "80:80"
-#   links:
-#     - elk
+version: '3'
+services:
+  elk:
+    image: sebp/elk
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+      - "5044:5044"
+    volumes:
+      - ${PWD}/elasticsearch.yml:/etc/elasticsearch/elasticsearch.yml
+      - ${PWD}/elk-data:/var/lib/elasticsearch
 
-elk:
-  image: sebp/elk
-  ports:
-    - "5601:5601"
-    - "9200:9200"
-    - "5044:5044"
+  # filebeat:
+  #   image: docker.elastic.co/beats/filebeat:7.10.1
+  #   environment:
+  #     - setup.kibana.host=elk:5601
+  #     - output.elasticsearch.hosts=["elk:9200"]
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - /var/lib/docker/containers:/var/lib/docker/containers
+  #     - ${PWD}/filebeat/data:/usr/share/filebeat/data
+  #   user: root
+  #   volumes:
+  #     - ${PWD}/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml
+  #   # command:
+  #   #   --strict.perms=false
+  #   links:
+  #     - elk
+
+
+  
